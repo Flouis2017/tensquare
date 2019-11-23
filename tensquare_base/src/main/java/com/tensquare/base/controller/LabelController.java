@@ -2,12 +2,9 @@ package com.tensquare.base.controller;
 
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
-import entity.PageResult;
 import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -19,38 +16,51 @@ public class LabelController {
 
 	@GetMapping
 	public Result findAll(){
-		PageResult<Label> pageResult = new PageResult<>();
-		List<Label> list =  this.labelService.findAll();
-		pageResult.setRows(list);
-		pageResult.setTotal((long) list.size());
-		return Result.success(pageResult);
+		return Result.success(this.labelService.findAll());
 	}
 
 	@GetMapping("/{labelId}")
 	public Result findById(@PathVariable("labelId") String labelId){
-		return Result.success();
+		return Result.success(this.labelService.findById(labelId));
 	}
 
 	@PostMapping
-	public Result save(@RequestBody Label label){
-		return Result.success();
+	public Result insert(@RequestBody Label label){
+		try {
+			this.labelService.insert(label);
+			return Result.success();
+		} catch (Exception e){
+			e.printStackTrace();
+			return Result.fail(e.getMessage());
+		}
 	}
 
 	@PutMapping("/{labelId}")
 	public Result update(@PathVariable String labelId, @RequestBody Label label){
-		return Result.success();
+		try {
+			label.setId(labelId);
+			this.labelService.update(label);
+			return Result.success();
+		} catch (Exception e){
+			e.printStackTrace();
+			return Result.fail(e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/{labelId}")
 	public Result deleteById(@PathVariable String labelId){
-		return Result.success();
+		try {
+			this.labelService.delete(labelId);
+			return Result.success();
+		} catch (Exception e){
+			e.printStackTrace();
+			return Result.fail(e.getMessage());
+		}
 	}
 
 	@GetMapping("/testCustomQuery")
 	public Result testCustomQuery(){
-		return Result.success(this.labelService.testCustomQuery());
+		return this.labelService.testCustomQuery();
 	}
-
-
 
 }
