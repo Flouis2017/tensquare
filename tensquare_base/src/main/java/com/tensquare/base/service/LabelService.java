@@ -1,6 +1,7 @@
 package com.tensquare.base.service;
 
 import com.tensquare.base.dao.LabelDao;
+import com.tensquare.base.pojo.Engineer;
 import com.tensquare.base.pojo.Label;
 import entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,11 @@ public class LabelService {
 	@Autowired
 	private SqlUtil sqlUtil;
 
+	@Autowired
+	private Engineer engineer;
+
 	public List<Label> findAll(){
+		System.out.println(this.engineer.getName() + ": " + this.engineer.getAge());
 		return this.labelDao.findAll();
 	}
 
